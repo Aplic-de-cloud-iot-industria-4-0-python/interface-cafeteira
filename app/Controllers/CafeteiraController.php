@@ -4,6 +4,13 @@ namespace App\Controllers;
 
 class CafeteiraController extends BaseController
 {
+    public $client;
+
+    public function __construct()
+    {
+        $this->client = \Config\Services::curlrequest();
+    }
+
     public function index(): string
     {
         return view('cafeteira');
@@ -11,11 +18,11 @@ class CafeteiraController extends BaseController
 
     public function ligar()
     {
-        dd("aaaaa");
+        $response = $this->client->request('GET', 'https://api.github.com/user');
     }
 
     public function desligar()
     {
-        dd("teste");
+        $response = $this->client->request('GET', 'https://api.github.com/user');
     }
 }
