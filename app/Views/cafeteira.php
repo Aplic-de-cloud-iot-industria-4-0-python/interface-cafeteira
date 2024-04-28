@@ -51,16 +51,16 @@
                         </div>
                         <div class="card-body">
                             <h5 class="card-title text-center">Cafézin 🤤</h5>
-                            <p class="card-text">
+                            <p class="card-text" id="text-cafeteira">
                                 Clique em "Fazer Café" para ligar a cafeteira. Quando estiver pronto desligue a cafeteira clicando no botão vermelho.
                             </p>
                             <div class="d-flex justify-content-center">
-                                <a href="<?= base_url("/ligar"); ?>" class="btn btn-success m-1">
+                                <button class="btn btn-success m-1" onclick="handleRequest('ligar')">
                                     Fazer Café
-                                </a>
-                                <a href="<?= base_url("/desligar"); ?>" class="btn btn-danger m-1">
+                                </button>
+                                <button class="btn btn-danger m-1" onclick="handleRequest('desligar')">
                                     Chega de Café
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -70,5 +70,36 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        async function handleRequest(endpoint) {
+            try {
+                let url = endpoint;
+
+                const response = await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                });
+
+                const responseData = await response.json();
+
+                if (response.success) {
+                    let msg = responseData.msg;
+                    let paragraph = document.getElementById("text-cafeteira");
+
+                    paragraph.innerText = msg;
+                    paragraph.style.textAlign = "center";
+                } else {
+                    console.log("Erro");
+                    console.log(response);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    </script>
 </body>
 </html>
