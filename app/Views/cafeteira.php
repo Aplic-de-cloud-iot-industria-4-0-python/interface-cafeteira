@@ -86,7 +86,7 @@
 
                 const responseData = await response.json();
 
-                if (response.success) {
+                if (responseData.success) {
                     let msg = responseData.msg;
                     let paragraph = document.getElementById("text-cafeteira");
 
