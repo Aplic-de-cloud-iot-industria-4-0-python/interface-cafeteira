@@ -77,6 +77,14 @@ class Filters extends BaseFilters
             // 'honeypot',
             // 'secureheaders',
         ],
+        'session' => [
+            'except' => [
+                'login*', 
+                'register', 
+                'auth/a/*', 
+                'logout'
+            ]
+        ]
     ];
 
     /**
