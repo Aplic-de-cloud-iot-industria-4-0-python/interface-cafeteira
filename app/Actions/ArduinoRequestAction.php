@@ -2,37 +2,43 @@
 
 namespace App\Actions;
 
+use PhpCoap\Client\Client;
+use React\EventLoop\Factory;
+
 class ArduinoRequestAction
 {
     public $client;
+    public $loop;
 
     public function __construct()
     {
-        $this->client = \Config\Services::curlrequest();
+        $this->client = $this->initCoap();
     }
 
-    private function getUrl(string $endpoint): string
+    public function initCoap()
     {
-        $ip = "";
-        $port = 80;
+        $this->loop = Factory::create();
+        $client = new Client($this->loop);
 
-        return "https://$ip:$port/$endpoint"; 
+        return $client;
     }
 
     public function requestToArduino($endpoint): array
     {
         try {
-            $response = $this->client->request('GET', $this->getUrl($endpoint));
-            $message = $response->getBody();
+            $response = $this->client->get('coap://skynet.im/status', function($data) {
+                return $data;
+            });
+            $this->loop->run();
 
-            $data = [
+            $dataRequest = [
                 "success" => true,
-                "msg" => $message
+                "msg" => $response
             ];
         } catch (\Throwable $th) {
             return ["success" => false, "msg" => $th->getMessage()];
         }
 
-        return $data;
+        return $dataRequest;
     }
 }
