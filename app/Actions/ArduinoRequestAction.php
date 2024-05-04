@@ -15,7 +15,7 @@ class ArduinoRequestAction
         $this->client = $this->initCoap();
     }
 
-    public function initCoap()
+    private function initCoap()
     {
         $this->loop = Factory::create();
         $client = new Client($this->loop);
@@ -23,10 +23,18 @@ class ArduinoRequestAction
         return $client;
     }
 
-    public function requestToArduino($endpoint): array
+    private function mountUrl(string $endpoint): string
+    {
+        $ipArduino = "IP_ARDUINO";
+        $url = "coap://$ipArduino/$endpoint";
+
+        return $url;
+    }
+
+    public function requestToArduino(string $endpoint): array
     {
         try {
-            $response = $this->client->get('coap://skynet.im/status', function($data) {
+            $response = $this->client->get($this->mountUrl($endpoint), function($data) {
                 return $data;
             });
             $this->loop->run();
