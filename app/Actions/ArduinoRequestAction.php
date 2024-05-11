@@ -25,7 +25,7 @@ class ArduinoRequestAction
 
     private function mountUrl(string $endpoint): string
     {
-        $ipArduino = "IP_ARDUINO";
+        $ipArduino = "172.16.0.9";
         $url = "coap://$ipArduino/$endpoint";
 
         return $url;
@@ -33,19 +33,27 @@ class ArduinoRequestAction
 
     public function requestToArduino(string $endpoint): array
     {
-        try {
-            $response = $this->client->get($this->mountUrl($endpoint), function($data) {
-                return $data;
-            });
-            $this->loop->run();
+        // try {
+        //     $response = $this->client->get($this->mountUrl($endpoint), function($data) {
+        //         return $data;
+        //     });
 
-            $dataRequest = [
-                "success" => true,
-                "msg" => $response
-            ];
-        } catch (\Throwable $th) {
-            return ["success" => false, "msg" => $th->getMessage()];
-        }
+        //     $dataRequest = [
+        //         "success" => true,
+        //         "msg" => $response
+        //     ];
+        // } catch (\Throwable $th) {
+        //     return ["success" => false, "msg" => $th->getMessage()];
+        // }
+
+        $response = $this->client->get($this->mountUrl($endpoint), function($data) {
+            return $data;
+        });
+
+        $dataRequest = [
+            "success" => true,
+            "msg" => $response
+        ];
 
         return $dataRequest;
     }

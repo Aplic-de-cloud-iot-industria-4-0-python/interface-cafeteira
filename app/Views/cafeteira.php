@@ -73,6 +73,7 @@
 
     <script type="text/javascript">
         async function handleRequest(endpoint) {
+            console.log("teste");
             try {
                 let url = endpoint;
 
@@ -97,7 +98,7 @@
                     console.log(response);
                 }
             } catch (error) {
-                console.log(error);
+                console.log("aaaa: " + error);
             }
         }
     </script>
